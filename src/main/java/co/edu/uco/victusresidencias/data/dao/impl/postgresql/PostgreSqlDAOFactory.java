@@ -21,9 +21,13 @@ import co.edu.uco.victusresidencias.data.dao.UsageTimeUnitDAO;
 public final class PostgreSqlDAOFactory extends DAOFactory {
 
 	private Connection connection;
-	private final String url = "jdbc:postgresql://localhost:5432/LocalBaseDatosJava";
-	private final String user = "postgres";
-	private final String password = "123456";
+	private final String url = "jdbc:postgresql://dpg-cvmbeb63jp1c7381j380-a.oregon-postgres.render.com/backendvictusdb";
+	private final String user = "teamvictus";
+	private final String password = "RLR8kFTHUyIwbKO5HymDtLboRe7NnROW";
+
+	//private final String url = "jdbc:postgresql://localhost:5432/LocalBaseDatosJava";
+	//private final String user = "postgres";
+	//private final String password = "123456";
 	
 
 	public PostgreSqlDAOFactory() {
