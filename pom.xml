@@ -1,0 +1,95 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.5</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>co.edu.uco.victusresidencias</groupId>
+	<artifactId>victusresidencias-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>victusresidencias</name>
+
+	<description>El proyecto consiste en el desarrollo de un sistema de backend
+		para la gestión de reservas en un conjunto residencial. Este sistema
+		permitirá a los residentes realizar y gestionar reservas de diferentes
+		áreas comunes (como salas de reuniones, canchas deportivas, piscinas,
+		salones de eventos, etc.) de manera eficiente y automatizada.
+
+		El sistema será responsable de la gestión de usuarios, administración de
+		recursos disponibles y manejo de las reservas en tiempo real, asegurando
+		la disponibilidad de los espacios y evitando conflictos en las reservas.
+		Además, ofrecerá funcionalidades para notificaciones automáticas,
+		gestión de horarios, cancelaciones y un registro histórico de las
+		actividades.</description>
+
+	<url />
+	<licenses>
+		<license />
+	</licenses>
+	<developers>
+		<developer />
+	</developers>
+	<scm>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+	<properties>
+		<sonar.organization>jzuluf</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.inclusions>src/main/java/**</sonar.inclusions>
+		<sonar.test.inclusions>src/test/java/**</sonar.test.inclusions>
+		<java.version>23</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
