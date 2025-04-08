@@ -1,0 +1,2 @@
+para crear el docker
+mvn clean package

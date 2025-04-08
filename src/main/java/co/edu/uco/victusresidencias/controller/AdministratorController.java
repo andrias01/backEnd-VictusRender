@@ -33,7 +33,8 @@ import co.edu.uco.victusresidencias.domain.AdministratorDomain;
 import co.edu.uco.victusresidencias.dto.AdministratorDTO;
 import co.edu.uco.victusresidencias.entity.AdministratorEntity;
 
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://tangerine-profiterole-824fd8.netlify.app")
 @RestController
 @RequestMapping("/api/v1/administrator")
 //@CrossOrigin(origins = {"http://localhost:4200"})
