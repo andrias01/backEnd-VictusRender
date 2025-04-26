@@ -17,7 +17,7 @@ import co.edu.uco.victusresidencias.entity.AdministratorEntity;
 import co.edu.uco.victusresidencias.entity.CountryEntity;
 
 public final class FindAdministratorImpl implements FindAdministrator {
-
+    // Hola mundo, sólo estoy probando si puedo hacer git commit y push desde mi inteliJ para trabajar mejor uwu
     private DAOFactory daoFactory;
 
     public FindAdministratorImpl(final DAOFactory daoFactory) {
