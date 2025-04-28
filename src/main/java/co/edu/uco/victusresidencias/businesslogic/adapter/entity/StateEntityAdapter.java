@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
+import co.edu.uco.victusresidencias.domain.CountryDomain;
 import co.edu.uco.victusresidencias.domain.StateDomain;
 import co.edu.uco.victusresidencias.entity.StateEntity;
+
+import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
 
 public class StateEntityAdapter implements Adapter<StateEntity,StateDomain>{
 	
@@ -19,15 +22,13 @@ public class StateEntityAdapter implements Adapter<StateEntity,StateDomain>{
 	private StateEntityAdapter() {
 		
 	}
-	
 	public static Adapter<StateEntity,StateDomain> getStateEntityAdapter(){
 		return instance;
 	}
 
 	@Override
 	public StateEntity adaptSource(StateDomain data) {
-		// Ensure data is not null, use a default value if it is
-        var domainToAdapt = ObjectHelper.getDefault(data, StateDomain.create(UUIDHelper.getDefault(), TextHelper.EMPTY, null));
+        var domainToAdapt = ObjectHelper.getDefault(data, createDefault.STATE);
 
         // Convert StateDomain to StateEntity
         var entityToAdapt = new StateEntity();

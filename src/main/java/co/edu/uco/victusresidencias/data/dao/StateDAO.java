@@ -5,6 +5,10 @@ import java.util.UUID;
 
 import co.edu.uco.victusresidencias.entity.StateEntity;
 
-public interface StateDAO extends RetrieveDAO<StateEntity, UUID> {
+public interface StateDAO
+        extends RetrieveDAO<StateEntity, UUID>,
+                CreateDAO<StateEntity>,
+                DeleteDAO<UUID>,
+                UpdateDAO<StateEntity>{
 
 }

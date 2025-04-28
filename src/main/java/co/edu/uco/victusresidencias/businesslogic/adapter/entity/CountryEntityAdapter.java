@@ -13,7 +13,6 @@ import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
 import co.edu.uco.victusresidencias.domain.CountryDomain;
 import co.edu.uco.victusresidencias.entity.CountryEntity;
 
-
 public class CountryEntityAdapter implements Adapter<CountryEntity,CountryDomain>{
 	
 	private static final Adapter<CountryEntity,CountryDomain> instance = new CountryEntityAdapter();

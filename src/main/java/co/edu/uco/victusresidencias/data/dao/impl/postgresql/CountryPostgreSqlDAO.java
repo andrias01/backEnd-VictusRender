@@ -40,7 +40,6 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 
 	@Override
 	public List<CountryEntity> findByFilter(CountryEntity filter) { //filter datos 
-		System.out.println("La carga paso por aqui del filter");
 		final var statement = new StringBuilder(); //sentencia SQL
 	    final var parameters = new ArrayList<>();  // ?
 	    final var resultSelect = new ArrayList<CountryEntity>(); //select para una lista entity
@@ -57,7 +56,6 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	            preparedStatement.setObject(statementIndex, parameters.get(arrayIndex));
 	        }
 	        System.out.println("Sentencia preparada " + statement);
-	        
 	        statementWasPrepared = true;
 	        
 	        final var result = preparedStatement.executeQuery();

@@ -56,15 +56,16 @@ public final class SqlServerDAOFactory extends DAOFactory {
 		return new CitySqlServerDAO(connection);
 	}
 
-	@Override
-	public StateDAO getStateDAO() {
-		return new StateSqlServerDAO(connection);
-				
-	}
+
 
 	@Override
 	public CountryDAO getCountryDAO() {
 		return new CountrySqlServerDAO(connection);
+	}
+
+	@Override
+	public StateDAO getStateDAO() {
+		return null;
 	}
 
 	@Override
