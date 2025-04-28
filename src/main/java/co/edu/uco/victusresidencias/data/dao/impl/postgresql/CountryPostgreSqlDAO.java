@@ -46,16 +46,9 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	    final var resultSelect = new ArrayList<CountryEntity>(); //select para una lista entity
 	    var statementWasPrepared = false;	//sentencia fue preparada?	 
 	    
-	    // Select
 	    createSelect(statement);
-//		SELECT id, name FROM country ORDER BY name ASC
-	    // From
 	    createFrom(statement);
-	    
-	    // Where
 	    createWhere(statement, filter, parameters);
-	    
-	    // Order By
 	    createOrderBy(statement);
 	    
 	    try (var preparedStatement = getConnection().prepareStatement(statement.toString())) {
@@ -70,17 +63,11 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	        final var result = preparedStatement.executeQuery();
 	        while (result.next()) {
 	            var countryEntityTmp = new CountryEntity();
-	            //var stateEntityTmp = new StateEntity();
 	            countryEntityTmp.setId(UUID.fromString(result.getString("id")));
 	            System.out.println("id que inserta a la lista " + UUID.fromString(result.getString("id")));
-	            
 	            countryEntityTmp.setName(result.getString("name"));
-	            
-	            //stateEntityTmp.setId(UUID.fromString(result.getString("state")));
-	            
-	            //countryEntityTmp.setState(stateEntityTmp);
-	            
-	            resultSelect.add(countryEntityTmp);		
+
+	            resultSelect.add(countryEntityTmp);
 	        }
 	    } catch (final SQLException exception) {
 	        var userMessage = "Se ha presentado un problema tratando de llevar a cabo la consulta de los paises.";
@@ -104,8 +91,8 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 
 	private void createWhere(final StringBuilder statement, 
             final CountryEntity filter, 
-            final List<Object> parameters) {//filter.getId = 0000000
-			if (!UUIDHelper.isDefault(filter.getId())) { // Se asegura de que el ID no sea el valor predeterminado
+            final List<Object> parameters) {
+			if (!UUIDHelper.isDefault(filter.getId())) {
 				System.out.println("Sentencia preparada con where " + filter.getId());
 				statement.append("WHERE id = ? ");
 				parameters.add(filter.getId());
@@ -122,7 +109,6 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	@Override
 	public void create(CountryEntity data) {
 		
-		// Verificar si ya existe un país con el mismo nombre
 	    CountryEntity filter = new CountryEntity();
 	    filter.setName(data.getName());
 	    if (!findByFilter(filter).isEmpty()) {
@@ -163,13 +149,11 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 
 	        preparedStatement.setObject(1, data);
-
 	        preparedStatement.executeUpdate();
 
 	    } catch (final SQLException exception) {
 	        var userMessage = "Se ha presentado un problema tratando de eliminar la ciudad seleccionada. Por favor intente de nuevo y si el problema persiste reporte la novedad...";
 	        var technicalMessage = "Se ha presentado un problema al tratar de eliminar la ciudad en la base de datos SQL Server. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...";
-
 	        throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 	    }
 	}

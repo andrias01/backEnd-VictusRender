@@ -94,7 +94,6 @@ public final class AdministratorController {
                 responseWithData.setMessages(messages);
                 return new ResponseEntity<>(responseWithData, HttpStatus.NOT_FOUND);
             }
-
             // Paso 2: Fusionar datos nuevos con los existentes
             if (admin.getName() != "") existingAdministratorEntity.setName(admin.getName());
             if (admin.getLastName() != "") existingAdministratorEntity.setLastName(admin.getLastName());

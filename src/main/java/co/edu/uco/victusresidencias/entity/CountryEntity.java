@@ -18,7 +18,7 @@ public class CountryEntity extends DomainEntity {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = TextHelper.applyTrim(name);
 	}
 	@Override

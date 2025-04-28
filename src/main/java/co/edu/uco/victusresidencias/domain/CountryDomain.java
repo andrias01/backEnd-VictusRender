@@ -12,7 +12,6 @@ public class CountryDomain extends Domain {
 	private CountryDomain(final UUID id, final String name) {
 		super(id);
 		setName(name);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static final CountryDomain create (
@@ -21,7 +20,7 @@ public class CountryDomain extends Domain {
 		return new CountryDomain(id, name);
 	}
 	
-	static final CountryDomain create() {
+	public static final CountryDomain create() {
 		return new CountryDomain(UUIDHelper.getDefault(), TextHelper.EMPTY);
 	}
 	

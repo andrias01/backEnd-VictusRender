@@ -37,13 +37,7 @@ public class AdministratorDTOAdapter implements Adapter<AdministratorDomain, Adm
                 data.getContactNumber(),
                 data.getEmail(),
                 data.getPassword()
-//                dtoToAdapt.getName(),
-//                dtoToAdapt.getLastName(),
-//                dtoToAdapt.getIdType(),
-//                dtoToAdapt.getIdNumber(),
-//                dtoToAdapt.getContactNumber(),
-//                dtoToAdapt.getEmail(),
-//                dtoToAdapt.getPassword()
+
         );
     }
 

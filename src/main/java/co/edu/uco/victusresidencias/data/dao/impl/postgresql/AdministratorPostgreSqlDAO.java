@@ -32,7 +32,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	@Override
 	public List<AdministratorEntity> findAll() {
 		AdministratorEntity pruebaAdmin = new AdministratorEntity();
-		System.out.println("Este es el id generico== " + pruebaAdmin.getId());
+		System.out.println("El admin nuevo tiene el id " + pruebaAdmin.getId());
 		return findByFilter(new AdministratorEntity());
 	}
 	
