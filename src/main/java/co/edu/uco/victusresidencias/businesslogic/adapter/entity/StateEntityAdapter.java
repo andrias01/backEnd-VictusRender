@@ -41,10 +41,7 @@ public class StateEntityAdapter implements Adapter<StateEntity,StateDomain>{
 
 	@Override
 	public StateDomain adaptTarget(StateEntity data) {
-		// Ensure data is not null, use a default value if it is
         var entityToAdapt = ObjectHelper.getDefault(data, new StateEntity());
-
-        // Convert StateEntity to StateDomain
         return StateDomain.create(
             entityToAdapt.getId(),
             entityToAdapt.getName(),
