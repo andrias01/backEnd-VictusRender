@@ -18,7 +18,6 @@ public class AdministratorEntity extends DomainEntity {
 
 	public AdministratorEntity() {
 		super(UUIDHelper.getDefault());
-		setName(TextHelper.EMPTY);
 	}
 	
 	public String getName() {

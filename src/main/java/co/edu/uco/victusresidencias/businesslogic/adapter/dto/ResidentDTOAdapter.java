@@ -7,7 +7,9 @@ import java.util.List;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
 import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
+import co.edu.uco.victusresidencias.crosscutting.helpers.NumericHelper;
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.victusresidencias.crosscutting.helpers.TextHelper;
 import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 import co.edu.uco.victusresidencias.domain.ResidentDomain;
 import co.edu.uco.victusresidencias.dto.ResidentDTO;
@@ -33,10 +35,10 @@ public class ResidentDTOAdapter implements Adapter<ResidentDomain, ResidentDTO>{
                 UUIDHelper.convertToUUID(dtoToAdapt.getId()),
                 dtoToAdapt.getIdType(),
                 dtoToAdapt.getName(),
-                dtoToAdapt.getLastName(), 
-                dtoToAdapt.getIdNumber(),
+                dtoToAdapt.getLastName(),
+                TextHelper.EMPTY,
                 dtoToAdapt.getDate(),
-                dtoToAdapt.getContactNumber(),
+                TextHelper.EMPTY,
                 dtoToAdapt.getPassword(),
                 PropertyDTOAdapter.getPropertyDTOAdapter().adaptSource(dtoToAdapt.getProperty())
         );
@@ -51,9 +53,9 @@ public class ResidentDTOAdapter implements Adapter<ResidentDomain, ResidentDTO>{
                 .setId(ObjectHelper.getDefault(domainToAdapt.getId().toString(), UUIDHelper.getDefaultAsString()))
                 .setName(domainToAdapt.getName())
                 .setLastName(domainToAdapt.getLastName())
-                .setIdNumber(domainToAdapt.getIdNumber())
+                .setIdNumber(NumericHelper.CERO)
                 .setDate(domainToAdapt.getBirthDate())
-                .setContactNumber(domainToAdapt.getContactNumber())
+                .setContactNumber(NumericHelper.CERO)
                 .setPassword(domainToAdapt.getPassword())
                 ;
     }

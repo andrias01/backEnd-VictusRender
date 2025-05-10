@@ -5,10 +5,7 @@ import java.time.LocalDate;
 
 import java.util.UUID;
 
-import co.edu.uco.victusresidencias.crosscutting.helpers.DateHelper;
-import co.edu.uco.victusresidencias.crosscutting.helpers.NumericHelper;
-import co.edu.uco.victusresidencias.crosscutting.helpers.TextHelper;
-import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
+import co.edu.uco.victusresidencias.crosscutting.helpers.*;
 
 
 public class ResidentDomain extends Domain {
@@ -16,15 +13,15 @@ public class ResidentDomain extends Domain {
     private String name;
     private String lastName;
     private String idType;
-    private int idNumber;
+    private String idNumber;
     private LocalDate birthDate;
-    private int contactNumber;
+    private String contactNumber;
     private String password;
     private PropertyDomain property;
 
     // Constructor privado
-    private ResidentDomain(final UUID id, final String name, final String lastName, final String idType, final int idNumber, 
-                           final LocalDate birthDate, final int contactNumber, final String password, final PropertyDomain property) {
+    private ResidentDomain(final UUID id, final String name, final String lastName, final String idType, final String idNumber,
+                           final LocalDate birthDate, final String contactNumber, final String password, final PropertyDomain property) {
         super(id);
         setName(name);
         setLastName(lastName);
@@ -37,15 +34,15 @@ public class ResidentDomain extends Domain {
     }
 
     // Método estático para crear una instancia con parámetros
-    public static ResidentDomain create(final UUID id, final String name, final String lastName, final String documentType, final int documentNumber, 
-                                        final LocalDate birthDate, final int contactNumber, final String password, final PropertyDomain property) {
+    public static ResidentDomain create(final UUID id, final String name, final String lastName, final String documentType, final String documentNumber,
+                                        final LocalDate birthDate, final String contactNumber, final String password, final PropertyDomain property) {
         return new ResidentDomain(id, name, lastName, documentType, documentNumber, birthDate, contactNumber, password, property);
     }
 
     // Método estático para crear una instancia vacía por defecto
     public static ResidentDomain create() {
-        return new ResidentDomain(UUIDHelper.getDefault(), TextHelper.EMPTY, TextHelper.EMPTY, TextHelper.EMPTY, NumericHelper.CERO,
-                                  DateHelper.DEFAULT_DATE, NumericHelper.CERO, TextHelper.EMPTY, PropertyDomain.create());
+        return new ResidentDomain(UUIDHelper.getDefault(), TextHelper.EMPTY, TextHelper.EMPTY, TextHelper.EMPTY, TextHelper.EMPTY,
+                                  DateHelper.DEFAULT_DATE,TextHelper.EMPTY, TextHelper.EMPTY, PropertyDomain.create());
     }
 
     // Getters y Setters
@@ -74,12 +71,12 @@ public class ResidentDomain extends Domain {
         this.idType = TextHelper.applyTrim(documentType);
     }
 
-    public int getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    private void setIdNumber(final int documentNumber) {
-        this.idNumber = (documentNumber > 0) ? documentNumber : NumericHelper.CERO;
+    private void setIdNumber(final String documentNumber) {
+        this.idNumber = ObjectHelper.getDefault(documentNumber, TextHelper.EMPTY);
     }
 
     public LocalDate getBirthDate() {
@@ -90,12 +87,12 @@ public class ResidentDomain extends Domain {
         this.birthDate = (birthDate != null) ? birthDate : DateHelper.DEFAULT_DATE;
     }
 
-    public int getContactNumber() {
+    public String getContactNumber() {
         return contactNumber;
     }
 
-    private void setContactNumber(final int contactNumber) {
-        this.contactNumber = (contactNumber > 0) ? contactNumber : NumericHelper.CERO;
+    private void setContactNumber(final String contactNumber) {
+        this.contactNumber = ObjectHelper.getDefault(contactNumber,TextHelper.EMPTY);
     }
 
     public String getPassword() {

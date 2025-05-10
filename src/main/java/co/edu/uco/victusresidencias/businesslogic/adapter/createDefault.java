@@ -52,9 +52,9 @@ public class createDefault {
 			TextHelper.EMPTY,
 			TextHelper.EMPTY,
 			TextHelper.EMPTY,
-			NumericHelper.CERO,
+			TextHelper.EMPTY,
 			DateHelper.DEFAULT_DATE,
-			NumericHelper.CERO,
+			TextHelper.EMPTY,
 			TextHelper.EMPTY,
 			PROPERTY);
 	public static final CommonZoneDomain COMMON_ZONE = CommonZoneDomain.create(
