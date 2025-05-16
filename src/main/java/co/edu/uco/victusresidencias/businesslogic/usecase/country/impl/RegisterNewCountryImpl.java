@@ -26,7 +26,7 @@ public final class RegisterNewCountryImpl implements RegisterNewCountry{
 	private void setDaoFactory(final DAOFactory daoFactory) {
 		if (ObjectHelper.isNull(daoFactory)) {
 			var userMessage = "Se ha presentado un problema inesperado, tratando de llevar a cabo el registro de la información del pais deseada. Por favor intente de nuevo y si el problema persiste, llame a Luz Mery Rios Alzate...";
-			var technicalMessage = "El DAO factory requerido para crear la clase registra la ciudad llegó nula...";
+			var technicalMessage = "El DAO factory requerido para crear la clase registra el pais llegó nula...";
 			throw BusinessLogicVictusResidenciasException.crear(userMessage, technicalMessage);
 		}
 		this.daoFactory = daoFactory;

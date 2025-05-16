@@ -16,7 +16,6 @@ import co.edu.uco.victusresidencias.data.dao.CountryDAO;
 import co.edu.uco.victusresidencias.data.dao.DAOFactory;
 import co.edu.uco.victusresidencias.data.dao.ResidentialComplexDAO;
 import co.edu.uco.victusresidencias.data.dao.StateDAO;
-import co.edu.uco.victusresidencias.data.dao.UsageTimeUnitDAO;
 
 public final class PostgreSqlDAOFactory extends DAOFactory {
 
@@ -25,15 +24,15 @@ public final class PostgreSqlDAOFactory extends DAOFactory {
 //	private final String user = "teamvictus";
 //	private final String password = "RLR8kFTHUyIwbKO5HymDtLboRe7NnROW";
 
-//	private final String url = "jdbc:postgresql://localhost:5432/LocalBaseDatosJava";
-//	private final String user = "postgres";
-//	private final String password = "123456";
-	//postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway
-	private final String url = "jdbc:postgresql://switchyard.proxy.rlwy.net:35862/railway";
+	private final String url = "jdbc:postgresql://localhost:5432/LocalBaseDatosJava";
 	private final String user = "postgres";
-	private final String password = "zamaSRiLZrfwYFewRqWwFsgffHrvxSrA";
-
-	private final String urlGeneral = "jdbc:postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway";
+	private final String password = "123456";
+	//postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway
+//	private final String url = "jdbc:postgresql://switchyard.proxy.rlwy.net:35862/railway";
+//	private final String user = "postgres";
+//	private final String password = "zamaSRiLZrfwYFewRqWwFsgffHrvxSrA";
+//
+//	private final String urlGeneral = "jdbc:postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway";
 
 	public PostgreSqlDAOFactory() {
 		openConnection();
@@ -102,10 +101,6 @@ public final class PostgreSqlDAOFactory extends DAOFactory {
 		return new AdministratorPostgreSQLDAO(connection);
 	}
 
-	@Override
-	public UsageTimeUnitDAO getUsageTimeUnitDAO() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

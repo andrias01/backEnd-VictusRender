@@ -9,13 +9,11 @@ public class PropertyDTO extends DomainDTO {
     
     private String propertyType;
     private int housingNumber;
-    private PropertyZoneDTO propertyZone;
 
     private PropertyDTO() {
         super(UUIDHelper.getDefaultAsString());
         setPropertyType(TextHelper.EMPTY);
         setHousingNumber(NumericHelper.CERO);
-        setPropertyZone(PropertyZoneDTO.create());
     }
 
     public static PropertyDTO create() {
@@ -37,15 +35,6 @@ public class PropertyDTO extends DomainDTO {
 
     public PropertyDTO setHousingNumber(int housingNumber) {
         this.housingNumber = housingNumber;
-        return this;
-    }
-
-    public PropertyZoneDTO getPropertyZone() {
-        return propertyZone;
-    }
-
-    public PropertyDTO setPropertyZone(PropertyZoneDTO propertyZone) {
-        this.propertyZone = ObjectHelper.getDefault(propertyZone, PropertyZoneDTO.create());
         return this;
     }
 

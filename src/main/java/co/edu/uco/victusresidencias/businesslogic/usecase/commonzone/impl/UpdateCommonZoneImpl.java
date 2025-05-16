@@ -3,27 +3,26 @@ package co.edu.uco.victusresidencias.businesslogic.usecase.commonzone.impl;
 
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 import co.edu.uco.victusresidencias.businesslogic.adapter.entity.ResidentialComplexEntityAdapter;
-import co.edu.uco.victusresidencias.businesslogic.usecase.residentialcomplex.UpdateResidentialComplex;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.BusinessLogicVictusResidenciasException;
 import co.edu.uco.victusresidencias.data.dao.DAOFactory;
 import co.edu.uco.victusresidencias.domain.ResidentialComplexDomain;
 
-public final class UpdateCommonZoneImpl implements UpdateResidentialComplex{
-	
+//public final class UpdateCommonZoneImpl implements UpdateResidentialComplex{
+public final class UpdateCommonZoneImpl{
 	private DAOFactory daoFactory;
 	
 	public UpdateCommonZoneImpl(DAOFactory daoFactory){
 		setDaoFactory(daoFactory);
 	}
 	
-	@Override
-	public void execute(final ResidentialComplexDomain data) {
-		// Validate policies
-		
-		var residentialComplexEntity = ResidentialComplexEntityAdapter.getResidentialComplexEntityAdapter().adaptSource(data);
-		daoFactory.getResidentialComplexDAO().update(residentialComplexEntity);
-		
-	}
+//	@Override
+//	public void execute(final ResidentialComplexDomain data) {
+//		// Validate policies
+//
+//		var residentialComplexEntity = ResidentialComplexEntityAdapter.getResidentialComplexEntityAdapter().adaptSource(data);
+//		daoFactory.getResidentialComplexDAO().update(residentialComplexEntity);
+//
+//	}
 
 	private void setDaoFactory(final DAOFactory daoFactory) {
 		if (ObjectHelper.isNull(daoFactory)) {

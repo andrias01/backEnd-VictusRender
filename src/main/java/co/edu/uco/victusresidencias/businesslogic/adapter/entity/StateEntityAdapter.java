@@ -2,8 +2,6 @@ package co.edu.uco.victusresidencias.businesslogic.adapter.entity;
 
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 
-import co.edu.uco.victusresidencias.crosscutting.helpers.TextHelper;
-import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -32,8 +32,8 @@ public class PropertyDTOAdapter implements Adapter<PropertyDomain, PropertyDTO> 
         return PropertyDomain.create(
                 UUIDHelper.convertToUUID(dtoToAdapt.getId()),
                 dtoToAdapt.getPropertyType(),
-                dtoToAdapt.getHousingNumber(),
-                PropertyZoneDTOAdapter.getPropertyZoneDTOAdapter().adaptSource(dtoToAdapt.getPropertyZone())
+                dtoToAdapt.getHousingNumber()
+//                PropertyZoneDTOAdapter.getPropertyZoneDTOAdapter().adaptSource(dtoToAdapt.getPropertyZone())
         );
     }
 
@@ -44,8 +44,8 @@ public class PropertyDTOAdapter implements Adapter<PropertyDomain, PropertyDTO> 
         
         return PropertyDTO.create()
         		.setId(ObjectHelper.getDefault(domainToAdapt.getId().toString(), UUIDHelper.getDefaultAsString()))
-        		.setHousingNumber(domainToAdapt.getPropertyNumber())
-        		.setPropertyZone(PropertyZoneDTOAdapter.getPropertyZoneDTOAdapter().adaptTarget(domainToAdapt.getPropertyZone()));
+        		.setHousingNumber(domainToAdapt.getPropertyNumber());
+//        		.setPropertyZone(PropertyZoneDTOAdapter.getPropertyZoneDTOAdapter().adaptTarget(domainToAdapt.getPropertyZone()));
         
     }
     @Override

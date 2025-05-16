@@ -5,7 +5,6 @@ import java.util.List;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.dto.ResidentialComplexDTOAdapter;
 import co.edu.uco.victusresidencias.businesslogic.facade.residentialcomplex.FindResidentialComplexFacade;
-import co.edu.uco.victusresidencias.businesslogic.usecase.residentialcomplex.impl.FindResidentialComplexImpl;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.BusinessLogicVictusResidenciasException;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.VictusResidenciasException;
 import co.edu.uco.victusresidencias.data.dao.DAOFactory;
@@ -18,10 +17,10 @@ public final class FindResidentialComplexFacadeImpl implements FindResidentialCo
 		var factory = DAOFactory.getFactory(DAOSource.SQLSERVER);
 		
 		try {
-			var findResidentialComplexUseCase = new FindResidentialComplexImpl(factory);//new FindCityImpl(factory);
+//			var findResidentialComplexUseCase = new FindResidentialComplexImpl(factory);//new FindCityImpl(factory);
 			var residentialComplexDomain = ResidentialComplexDTOAdapter.getResidentialComplexDTOAdapter().adaptSource(data);
 			
-			return ResidentialComplexDTOAdapter.getResidentialComplexDTOAdapter().adaptTarget(findResidentialComplexUseCase.execute(residentialComplexDomain));
+//			return ResidentialComplexDTOAdapter.getResidentialComplexDTOAdapter().adaptTarget(findResidentialComplexUseCase.execute(residentialComplexDomain));
 			
 		} catch (final VictusResidenciasException exception) {
 			throw exception;
@@ -33,6 +32,7 @@ public final class FindResidentialComplexFacadeImpl implements FindResidentialCo
 		} finally {
 			factory.closeConnection();
 		}
-	
+
+		return null;
 	}
 }

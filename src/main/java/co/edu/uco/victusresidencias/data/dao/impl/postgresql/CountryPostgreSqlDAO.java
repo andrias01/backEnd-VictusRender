@@ -15,7 +15,14 @@ import co.edu.uco.victusresidencias.data.dao.impl.sql.SqlDAO;
 import co.edu.uco.victusresidencias.entity.CountryEntity;
 
 final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
-	
+	private static final String FROM = "FROM pais ";
+	private static final String SELECT = "SELECT id, nombre ";
+	private static final String DELETE = "DELETE FROM pais WHERE id = ?";
+	private static final String UPDATE = "UPDATE pais SET nombre = ? WHERE id = ?";
+	private static final String NAMEclassSingular = "Pais";
+	private static final String NAMEclassPlural = "Paises";
+	private static final String CREATEstatemente = "INSERT INTO pais(id, nombre) VALUES (?, ?)";
+
 	public CountryPostgreSQLDAO(Connection connection) {
 		super(connection);
 	}	
@@ -31,11 +38,7 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	
 
 	@Override
-	public List<CountryEntity> findAll() {
-		CountryEntity pruebaPais = new CountryEntity();
-		System.out.println("el pais nuevo tiene el id " + pruebaPais.getId());
-		return findByFilter(new CountryEntity());  //default 0000 y name =""
-	}
+	public List<CountryEntity> findAll() {return findByFilter(new CountryEntity());}
 	
 
 	@Override
@@ -63,15 +66,15 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	            var countryEntityTmp = new CountryEntity();
 	            countryEntityTmp.setId(UUID.fromString(result.getString("id")));
 	            System.out.println("id que inserta a la lista " + UUID.fromString(result.getString("id")));
-	            countryEntityTmp.setName(result.getString("name"));
+	            countryEntityTmp.setName(result.getString("nombre"));
 
 	            resultSelect.add(countryEntityTmp);
 	        }
 	    } catch (final SQLException exception) {
-	        var userMessage = "Se ha presentado un problema tratando de llevar a cabo la consulta de los paises.";
-	        var technicalMessage = statementWasPrepared ? 
-	            "Problema ejecutando la consulta de paises en la base de datos." : 
-	            "Problema preparando la consulta de paises en la base de datos.";
+			var userMessage = String.format("Se ha presentado un problema tratando de llevar a cabo la consulta de los %s.",NAMEclassPlural);
+			var technicalMessage = statementWasPrepared ?
+					String.format("Problema ejecutando la consulta de los %s en la base de datos.",NAMEclassPlural) :
+					String.format("Problema preparando la consulta de los %s en la base de datos.",NAMEclassPlural);
 	        
 	        throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 	    }
@@ -79,13 +82,9 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	    return resultSelect;
 	}
 	
-	private void createSelect(final StringBuilder statement) {
-		statement.append("SELECT id, name ");
-	}
-	
-	private void createFrom(final StringBuilder statement) {
-		statement.append("FROM country ");
-	}
+	private void createSelect(final StringBuilder statement) {statement.append(SELECT);}
+
+	private void createFrom(final StringBuilder statement) {statement.append(FROM);}
 
 	private void createWhere(final StringBuilder statement, 
             final CountryEntity filter, 
@@ -95,14 +94,12 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 				statement.append("WHERE id = ? ");
 				parameters.add(filter.getId());
 			} else if (!TextHelper.isEmpty(filter.getName())) { // Condición para filtro de nombre
-				statement.append("WHERE name = ? ");
+				statement.append("WHERE nombre = ? ");
 				parameters.add(filter.getName());
 			}//este if es para filtar por id o por nombre
 	}
 	
-	private void createOrderBy(final StringBuilder statement) {
-		statement.append("ORDER BY name ASC");
-	}
+	private void createOrderBy(final StringBuilder statement) {statement.append("ORDER BY nombre ASC");}
 
 	@Override
 	public void create(CountryEntity data) {
@@ -110,12 +107,13 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	    CountryEntity filter = new CountryEntity();
 	    filter.setName(data.getName());
 	    if (!findByFilter(filter).isEmpty()) {
-	        throw DataVictusResidenciasException.crear(
-	            "El país ya existe", "No se puede crear un país con el nombre duplicado: " + data.getName());
+			throw DataVictusResidenciasException.crear(
+					String.format("El %s ya existe",NAMEclassSingular),
+					String.format("No se puede crear un %s con el nombre duplicado: ",NAMEclassSingular) + data.getName());
 	    }
 	    
 	    final StringBuilder statement = new StringBuilder();
-	    statement.append("INSERT INTO country(id, name) VALUES (?, ?)");
+		statement.append(CREATEstatemente);
 
 	    // Verificar si el ID es el UUID predeterminado, y si es así, generar uno nuevo.
 	    if (UUIDHelper.isDefault(data.getId())) {
@@ -130,8 +128,8 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	        System.out.println("Se creó el país con el nombre " + data.getName() + " exitosamente");
 
 	    } catch (final SQLException exception) {
-	        var userMessage = "Se ha presentado un problema tratando de llevar a cabo el registro de la información del nuevo país. Por favor intente de nuevo y si el problema persiste reporte la novedad...";
-	        var technicalMessage = "Se ha presentado un problema al tratar de registrar la información del nuevo país en la base de datos SQL Server. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...";
+			var userMessage = String.format("Se ha presentado un problema tratando de llevar a cabo el registro de la información del nuevo %s. Por favor intente de nuevo y si el problema persiste reporte la novedad...",NAMEclassSingular);
+			var technicalMessage = String.format("Se ha presentado un problema al tratar de registrar la información del nuevo %s en la base de datos postgreSQL. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...",NAMEclassSingular);
 
 	        throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 	    }
@@ -142,7 +140,7 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	@Override
 	public void delete(UUID data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("DELETE FROM country WHERE id = ?");
+		statement.append(DELETE);
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 
@@ -150,8 +148,8 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	        preparedStatement.executeUpdate();
 
 	    } catch (final SQLException exception) {
-	        var userMessage = "Se ha presentado un problema tratando de eliminar la ciudad seleccionada. Por favor intente de nuevo y si el problema persiste reporte la novedad...";
-	        var technicalMessage = "Se ha presentado un problema al tratar de eliminar la ciudad en la base de datos SQL Server. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...";
+			var userMessage = String.format("Se ha presentado un problema tratando de eliminar el %s seleccionado. Por favor intente de nuevo y si el problema persiste reporte la novedad...",NAMEclassSingular);
+			var technicalMessage = String.format("Se ha presentado un problema al tratar de eliminar el %s en la base de datos PostgreSQL. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...",NAMEclassSingular);
 	        throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 	    }
 	}
@@ -159,7 +157,7 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	@Override
 	public void update(CountryEntity data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("UPDATE country SET name = ? WHERE id = ?");
+		statement.append(UPDATE);
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 
@@ -169,13 +167,16 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 	        preparedStatement.executeUpdate();
 
 	    } catch (final SQLException exception) {
-	        var userMessage = "Se ha presentado un problema tratando de actualizar la información de la ciudad. Por favor intente de nuevo y si el problema persiste reporte la novedad...";
-	        var technicalMessage = "Se ha presentado un problema al tratar de actualizar la información de la ciudad en la base de datos SQL Server. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...";
+			var userMessage = String.format("Se ha presentado un problema tratando de actualizar la información del %s. Por favor intente de nuevo y si el problema persiste reporte la novedad...",NAMEclassSingular);
+			var technicalMessage = String.format("Se ha presentado un problema al tratar de actualizar la información del %s en la base de datos PostgreSQL. Por favor valide el log de errores para encontrar mayores detalles del problema presentado...",NAMEclassSingular);
 
 	        throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 	    }
 		
 	}
 
-	
+//	public static void main(String[] args) {
+//		var id = UUIDHelper.generate();
+//		System.out.println(id);
+//	}
 }

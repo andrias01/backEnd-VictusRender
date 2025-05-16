@@ -12,13 +12,11 @@ public class PropertyEntity extends DomainEntity {
 	
 	private String propertyType;
 	private int propertyNumber;
-	private PropertyZoneEntity propertyZone;
-	
+
 	public PropertyEntity() {
 		super(UUIDHelper.getDefault());
 		setPropertyType(TextHelper.EMPTY);
 		setPropertyNumber(NumericHelper.CERO);
-		setPropertyZone(new PropertyZoneEntity());
 	}
 	
 	public String getPropertyType() {
@@ -47,12 +45,7 @@ public class PropertyEntity extends DomainEntity {
 		return super.getId();
 	}
 
-	public PropertyZoneEntity getPropertyZone() {
-		return propertyZone;
-	}
 
-	public void setPropertyZone(final PropertyZoneEntity propertyZone) {
-		this.propertyZone = ObjectHelper.getDefault(propertyZone, new PropertyZoneEntity());
-	}
+
 	
 }

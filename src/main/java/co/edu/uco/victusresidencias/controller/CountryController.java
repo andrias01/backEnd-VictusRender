@@ -172,35 +172,4 @@ public final class CountryController {
         return CountryDTO.create();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<CountryResponse> validateLogin(String username, String password) {
-        var response = new CountryResponse();
-        var messages = new ArrayList<String>();
-
-        try {
-            UUID idConverted = UUIDHelper.convertToUUID(password);
-            var entity = daoFactory.getCountryDAO().fingByID(idConverted);
-
-            if (entity == null) {
-                messages.add("No se encontró un país con esa clave.");
-                response.setMessages(messages);
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-
-            var domains = CountryEntityAdapter.getCountryEntityAdapter().adaptTarget(List.of(entity));
-            var dtos = CountryDTOAdapter.getCountryDTOAdapter().adaptTarget(domains);
-
-            response.setData(dtos);
-            messages.add("El país fue consultado satisfactoriamente.");
-            response.setMessages(messages);
-
-            return new GenerateResponse<CountryResponse>().generateSuccessResponseWithData(response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            messages.add("Error al consultar el país. Por favor intente nuevamente.");
-            response.setMessages(messages);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

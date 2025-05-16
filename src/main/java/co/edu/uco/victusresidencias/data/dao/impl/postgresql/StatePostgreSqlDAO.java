@@ -17,13 +17,13 @@ import co.edu.uco.victusresidencias.entity.StateEntity;
 
 
 final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
-	private static final String FROM = "FROM state ";
-	private static final String SELECT = "SELECT id, name, country ";
-	private static final String DELETE = "DELETE FROM state WHERE id = ?";
-	private static final String UPDATE = "UPDATE country SET name = ? WHERE id = ?";
+	private static final String FROM = "FROM departamento ";
+	private static final String SELECT = "SELECT id, nombre, pais_id ";
+	private static final String DELETE = "DELETE FROM departamento WHERE id = ?";
+	private static final String UPDATE = "UPDATE departamento SET nombre = ? WHERE id = ?";
 	private static final String NAMEclassSingular = "Departamento";
 	private static final String NAMEclassPlural = "Departamentos";
-	private static final String CREATEstatemente = "INSERT INTO country(id, name, country) VALUES (?, ?, ?)";
+	private static final String CREATEstatemente = "INSERT INTO departamento(id, nombre, pais_id) VALUES (?, ?, ?)";
 	
 	public StatePostgreSqlDAO(final Connection connection) {
 		super(connection);
@@ -67,8 +67,15 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	            var stateEntityTmp = new StateEntity();
 	            var countryEntityTmp = new CountryEntity();
 	            stateEntityTmp.setId(UUID.fromString(result.getString("id")));
-	            stateEntityTmp.setName(result.getString("name"));
-	            countryEntityTmp.setId(UUID.fromString(result.getString("country")));
+	            stateEntityTmp.setName(result.getString("nombre"));
+				//Aqui entra el id del pais
+	            countryEntityTmp.setId(UUID.fromString(result.getString("pais_id")));
+
+				//esto es para que muestre el nombre del pais cuando busque el departamento
+				PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
+				var entidadPais = factoria.getCountryDAO().fingByID(UUID.fromString(result.getString("pais_id")));
+				//Aqui entra el nombre del pais
+				countryEntityTmp.setName(entidadPais.getName());
 
 	            stateEntityTmp.setCountry(countryEntityTmp);
 	            
@@ -100,7 +107,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	        parameters.add(filter.getId());
 	    } else if (!TextHelper.isEmpty(filter.getName())) {
 			statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
-			statement.append("name = ? ");
+			statement.append("nombre = ? ");
 			parameters.add(filter.getName());
 		}
 
@@ -108,7 +115,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	}
 
 	private void createOrderBy(final StringBuilder statement) {
-	    statement.append("ORDER BY name ASC");
+	    statement.append("ORDER BY nombre ASC");
 	}
 
 

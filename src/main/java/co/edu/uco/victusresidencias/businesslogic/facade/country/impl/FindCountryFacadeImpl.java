@@ -30,8 +30,8 @@ public final class FindCountryFacadeImpl implements FindCountryFacade{
 		} catch (final VictusResidenciasException exception) {
 			throw exception;
 		}catch (final Exception exception) {
-			var userMEssage ="Se ha presentado un problema tratando de consultar la informacion de las ciudades...";
-			var technicalMEssage="Se ha presentado un problema inseperado consultando la informacion de las ciudades. por favor revise el log de errores para tener mas detalles...";
+			var userMEssage ="Se ha presentado un problema tratando de consultar la informacion de los paises...";
+			var technicalMEssage="Se ha presentado un problema inseperado consultando la informacion de los paises. por favor revise el log de errores para tener mas detalles...";
 			
 			throw BusinessLogicVictusResidenciasException.create(userMEssage, technicalMEssage, exception);
 		} finally {

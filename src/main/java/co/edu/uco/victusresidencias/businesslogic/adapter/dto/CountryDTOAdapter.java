@@ -41,7 +41,7 @@ public class CountryDTOAdapter implements Adapter<CountryDomain, CountryDTO> {
 	public CountryDTO adaptTarget(final CountryDomain data) {
 	    var domainToAdapt = ObjectHelper.getDefault(data, createDefault.COUNTRY);
 	    return CountryDTO.create()
-	            .setId(UUIDHelper.convertToString(domainToAdapt.getId())) /*pendiente*/ // Convertimos el UUID a String
+	            .setId(UUIDHelper.convertToString(domainToAdapt.getId()))
 	            .setName(domainToAdapt.getName());
 	}
 	@Override

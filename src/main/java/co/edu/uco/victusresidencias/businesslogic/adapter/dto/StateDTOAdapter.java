@@ -26,7 +26,7 @@ public class StateDTOAdapter implements Adapter<StateDomain, StateDTO>{
 	}
 
 	@Override
-	public StateDomain adaptSource(StateDTO data) {
+	public StateDomain adaptSource(final StateDTO data) {
 		var dtoToAdapt = ObjectHelper.getDefault(data,StateDTO.create());
 		return StateDomain.create(
 				UUIDHelper.convertToUUID(dtoToAdapt.getId()), 
@@ -39,7 +39,7 @@ public class StateDTOAdapter implements Adapter<StateDomain, StateDTO>{
 		// Usar un Domain por defecto si data es nulos
 		var domainToAdapt = ObjectHelper.getDefault(data, createDefault.STATE);
 		return StateDTO.create()
-				.setId(UUIDHelper.getDefaultAsString())
+				.setId(UUIDHelper.convertToString(domainToAdapt.getId()))
 				.setName(domainToAdapt.getName())
 				.setCountry(CountryDTOAdapter.getCountryDTOAdapter().adaptTarget(domainToAdapt.getCountry()));		
 	}

@@ -1,5 +1,6 @@
 package co.edu.uco.victusresidencias.businesslogic.adapter.entity;
 
+import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 
 
@@ -26,7 +27,7 @@ public class CountryEntityAdapter implements Adapter<CountryEntity,CountryDomain
 
 	@Override
 	public CountryEntity adaptSource(CountryDomain data) {
-		var domainToAdapt = ObjectHelper.getDefault(data, CountryDomain.create(UUIDHelper.getDefault(), TextHelper.EMPTY));
+		var domainToAdapt = ObjectHelper.getDefault(data, createDefault.COUNTRY);
 		
 		var entityToAdapt = new CountryEntity();
 		entityToAdapt.setId(domainToAdapt.getId());
