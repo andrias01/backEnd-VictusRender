@@ -21,14 +21,19 @@ import co.edu.uco.victusresidencias.data.dao.UsageTimeUnitDAO;
 public final class PostgreSqlDAOFactory extends DAOFactory {
 
 	private Connection connection;
-	private final String url = "jdbc:postgresql://dpg-cvmbeb63jp1c7381j380-a.oregon-postgres.render.com/backendvictusdb";
-	private final String user = "teamvictus";
-	private final String password = "RLR8kFTHUyIwbKO5HymDtLboRe7NnROW";
+//	private final String url = "jdbc:postgresql://dpg-cvmbeb63jp1c7381j380-a.oregon-postgres.render.com/backendvictusdb";
+//	private final String user = "teamvictus";
+//	private final String password = "RLR8kFTHUyIwbKO5HymDtLboRe7NnROW";
 
 //	private final String url = "jdbc:postgresql://localhost:5432/LocalBaseDatosJava";
 //	private final String user = "postgres";
 //	private final String password = "123456";
-	
+	//postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway
+	private final String url = "jdbc:postgresql://switchyard.proxy.rlwy.net:35862/railway";
+	private final String user = "postgres";
+	private final String password = "zamaSRiLZrfwYFewRqWwFsgffHrvxSrA";
+
+	private final String urlGeneral = "jdbc:postgresql://postgres:zamaSRiLZrfwYFewRqWwFsgffHrvxSrA@switchyard.proxy.rlwy.net:35862/railway";
 
 	public PostgreSqlDAOFactory() {
 		openConnection();
@@ -37,6 +42,7 @@ public final class PostgreSqlDAOFactory extends DAOFactory {
 	@Override
 	protected void openConnection() {
 		SqlConnectionHelper.validateIfConnectionIsOpen(connection);
+		//connection =SqlConnectionHelper.openConnectionPostgreSQL(urlGeneral);
 		connection = SqlConnectionHelper.openConnectionPostgreSQL(url, user, password);
 		System.out.println("Buen trabajo se conecto a la base de datos");
 	}

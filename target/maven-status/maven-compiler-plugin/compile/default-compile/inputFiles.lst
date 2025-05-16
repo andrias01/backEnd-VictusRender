@@ -128,7 +128,6 @@ C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResi
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\AdministratorController.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\CityController.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\CountryController.java
-C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\HomeController.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\response\concrete\AdministratorResponse.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\response\concrete\CityResponse.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\controller\response\concrete\CommonZoneResponse.java
@@ -182,7 +181,6 @@ C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResi
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\impl\sqlserver\ResidentSqlServerDAO.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\impl\sqlserver\ScheduledSqlServerDAO.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\impl\sqlserver\SqlServerDAOFactory.java
-C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\impl\sqlserver\StateSqlServerDAO.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\impl\sqlserver\TurnSqlServerDAO.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\PropertyDAO.java
 C:\Users\andre\Documents\development2025\SoftwareVICTUS\backendRender\VictusResidenciasApp\victusresidencias\src\main\java\co\edu\uco\victusresidencias\data\dao\PropertyZoneDAO.java

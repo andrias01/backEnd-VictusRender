@@ -60,7 +60,6 @@ co\edu\uco\victusresidencias\businesslogic\usecase\residentialcomplex\impl\FindR
 co\edu\uco\victusresidencias\data\dao\PropertyZoneDAO.class
 co\edu\uco\victusresidencias\businesslogic\facade\country\UpdateCountryFacade.class
 co\edu\uco\victusresidencias\businesslogic\facade\city\RegisterNewCityFacade.class
-co\edu\uco\victusresidencias\controller\HomeController.class
 co\edu\uco\victusresidencias\businesslogic\usecase\country\DeleteCountry.class
 co\edu\uco\victusresidencias\domain\ReservationDomain.class
 co\edu\uco\victusresidencias\businesslogic\usecase\commonzone\rules\impl\CommonZoneNameConsistencyIsValidImpl.class
@@ -188,7 +187,6 @@ co\edu\uco\victusresidencias\businesslogic\usecase\country\FindCountry.class
 co\edu\uco\victusresidencias\businesslogic\usecase\usagetimeunit\impl\RegisterNewUsageTimeUnitImpl.class
 co\edu\uco\victusresidencias\dto\PropertyZoneDTO.class
 co\edu\uco\victusresidencias\data\dao\UsageTimeUnitDAO.class
-co\edu\uco\victusresidencias\data\dao\impl\sqlserver\StateSqlServerDAO.class
 co\edu\uco\victusresidencias\businesslogic\usecase\residentialcomplex\RegisterNewResidentialComplex.class
 co\edu\uco\victusresidencias\dto\TurnDTO.class
 co\edu\uco\victusresidencias\data\dao\enums\DAOSource.class

@@ -1,0 +1,159 @@
+-- Creación de extensión para UUID (para compatibilidad, aunque los UUIDs vendrán del backend)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Tabla base para herencia
+CREATE TABLE entidad_base (
+    id UUID PRIMARY KEY -- El ID será proporcionado por el backend
+);
+
+-- Tabla País
+CREATE TABLE pais (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK que viene de entidad_base
+    nombre VARCHAR(100) NOT NULL UNIQUE
+) INHERITS (entidad_base);
+
+-- Tabla Departamento
+CREATE TABLE departamento (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    pais_id UUID NOT NULL,
+    CONSTRAINT fk_departamento_pais FOREIGN KEY (pais_id) REFERENCES pais(id) ON DELETE CASCADE
+) INHERITS (entidad_base);
+
+-- Tabla Ciudad
+CREATE TABLE ciudad (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    departamento_id UUID NOT NULL,
+    CONSTRAINT fk_ciudad_departamento FOREIGN KEY (departamento_id) REFERENCES departamento(id) ON DELETE CASCADE
+) INHERITS (entidad_base);
+
+-- Tabla Administrador
+CREATE TABLE administrador (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    tipo_documento VARCHAR(20) NOT NULL,
+    numero_documento VARCHAR(20) NOT NULL UNIQUE,
+    numero_contacto VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL
+) INHERITS (entidad_base);
+
+-- Tabla Portero
+CREATE TABLE portero (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    tipo_documento VARCHAR(20) NOT NULL,
+    numero_documento VARCHAR(20) NOT NULL UNIQUE,
+    numero_contacto VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL
+) INHERITS (entidad_base);
+
+-- Tabla Conjunto Residencial
+CREATE TABLE conjunto_residencial (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(200) NOT NULL UNIQUE,
+    telefono_contacto VARCHAR(20) NOT NULL UNIQUE,
+    direccion VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    correo VARCHAR(100) NOT NULL,
+    ciudad_id UUID NOT NULL,
+    administrador_id UUID NOT NULL,
+    portero_id UUID NOT NULL,
+    CONSTRAINT fk_conjunto_ciudad FOREIGN KEY (ciudad_id) REFERENCES ciudad(id),
+    CONSTRAINT fk_conjunto_administrador FOREIGN KEY (administrador_id) REFERENCES administrador(id),
+    CONSTRAINT fk_conjunto_portero FOREIGN KEY (portero_id) REFERENCES portero(id)
+) INHERITS (entidad_base);
+
+-- Tabla Zona Común
+CREATE TABLE zona_comun (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    capacidad INTEGER NOT NULL,
+    tiempo_uso_diario INTEGER NOT NULL, -- en minutos
+    normas TEXT,
+    conjunto_residencial_id UUID NOT NULL,
+    CONSTRAINT fk_zona_conjunto FOREIGN KEY (conjunto_residencial_id) REFERENCES conjunto_residencial(id) ON DELETE CASCADE
+) INHERITS (entidad_base);
+
+-- Tabla Inmueble
+CREATE TABLE inmueble (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    tipo_vivienda VARCHAR(50) NOT NULL CHECK (tipo_vivienda IN ('casa', 'apartamento')),
+    numero_vivienda VARCHAR(20) NOT NULL,
+    tipo_zona_vivienda VARCHAR(50) NOT NULL,
+    numero_zona_vivienda VARCHAR(20) NOT NULL,
+    conjunto_residencial_id UUID NOT NULL,
+    CONSTRAINT fk_inmueble_conjunto FOREIGN KEY (conjunto_residencial_id) REFERENCES conjunto_residencial(id) ON DELETE CASCADE,
+    CONSTRAINT unique_vivienda_conjunto UNIQUE (numero_vivienda, tipo_zona_vivienda, numero_zona_vivienda, conjunto_residencial_id)
+) INHERITS (entidad_base);
+
+-- Tabla Residente
+CREATE TABLE residente (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre_completo VARCHAR(200) NOT NULL,
+    tipo_identificacion VARCHAR(20) NOT NULL,
+    numero_identificacion VARCHAR(20) NOT NULL UNIQUE,
+    fecha_nacimiento DATE NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'activo' CHECK (estado IN ('activo', 'no activo')),
+    inmueble_id UUID NOT NULL,
+    CONSTRAINT fk_residente_inmueble FOREIGN KEY (inmueble_id) REFERENCES inmueble(id)
+) INHERITS (entidad_base);
+
+-- Tabla Turnos
+CREATE TABLE turno (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    nombre VARCHAR(100) NOT NULL,
+    numero_turno INTEGER NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'activo' CHECK (estado IN ('activo', 'no activo')),
+    CONSTRAINT check_horas CHECK (hora_fin > hora_inicio)
+) INHERITS (entidad_base);
+
+-- Tabla Agenda de Reservas
+CREATE TABLE agenda_reserva (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    turno_id UUID NOT NULL,
+    zona_comun_id UUID NOT NULL,
+    tipo_recurrencia VARCHAR(50) NOT NULL, 
+    fecha_hora_inicio TIMESTAMP NOT NULL,
+    fecha_hora_fin TIMESTAMP NOT NULL,
+    CONSTRAINT fk_agenda_turno FOREIGN KEY (turno_id) REFERENCES turno(id),
+    CONSTRAINT fk_agenda_zona FOREIGN KEY (zona_comun_id) REFERENCES zona_comun(id),
+    CONSTRAINT check_fechas CHECK (fecha_hora_fin > fecha_hora_inicio)
+) INHERITS (entidad_base);
+
+-- Tabla Reservas
+CREATE TABLE reserva (
+    id UUID PRIMARY KEY, -- Declaramos explícitamente la PK
+    zona_comun_id UUID NOT NULL,
+    residente_id UUID NOT NULL,
+    agenda_id UUID NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'activa' CHECK (estado IN ('activa', 'cancelada', 'completada')),
+    numero_invitados INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT fk_reserva_zona FOREIGN KEY (zona_comun_id) REFERENCES zona_comun(id),
+    CONSTRAINT fk_reserva_residente FOREIGN KEY (residente_id) REFERENCES residente(id),
+    CONSTRAINT fk_reserva_agenda FOREIGN KEY (agenda_id) REFERENCES agenda_reserva(id)
+) INHERITS (entidad_base);
+
+-- Índices para mejorar el rendimiento
+CREATE INDEX idx_departamento_pais ON departamento(pais_id);
+CREATE INDEX idx_ciudad_departamento ON ciudad(departamento_id);
+CREATE INDEX idx_conjunto_ciudad ON conjunto_residencial(ciudad_id);
+CREATE INDEX idx_zona_conjunto ON zona_comun(conjunto_residencial_id);
+CREATE INDEX idx_inmueble_conjunto ON inmueble(conjunto_residencial_id);
+CREATE INDEX idx_residente_inmueble ON residente(inmueble_id);
+CREATE INDEX idx_agenda_turno ON agenda_reserva(turno_id);
+CREATE INDEX idx_agenda_zona ON agenda_reserva(zona_comun_id);
+CREATE INDEX idx_reserva_zona ON reserva(zona_comun_id);
+CREATE INDEX idx_reserva_residente ON reserva(residente_id);
+CREATE INDEX idx_reserva_agenda ON reserva(agenda_id);

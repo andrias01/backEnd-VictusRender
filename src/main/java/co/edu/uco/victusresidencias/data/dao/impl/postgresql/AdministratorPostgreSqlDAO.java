@@ -62,13 +62,13 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	            var administratorEntityTmp = new AdministratorEntity();
 	            administratorEntityTmp.setId(UUID.fromString(result.getString("id")));
 	            System.out.println("ID del admin insertado en LISTA para mostar " + UUID.fromString(result.getString("id")));
-	            administratorEntityTmp.setName(result.getString("name"));
-	            administratorEntityTmp.setLastName(result.getString("last_name"));
-	            administratorEntityTmp.setIdType(result.getString("id_type"));
-	            administratorEntityTmp.setIdNumber(result.getString("id_number"));
-	            administratorEntityTmp.setContactNumber(result.getString("contact_number"));
+	            administratorEntityTmp.setName(result.getString("nombre"));
+	            administratorEntityTmp.setLastName(result.getString("apellido"));
+	            administratorEntityTmp.setIdType(result.getString("tipo_documento"));
+	            administratorEntityTmp.setIdNumber(result.getString("numero_documento"));
+	            administratorEntityTmp.setContactNumber(result.getString("numero_contacto"));
 	            administratorEntityTmp.setEmail(result.getString("email"));
-	            administratorEntityTmp.setPassword(result.getString("password"));
+	            administratorEntityTmp.setPassword(result.getString("contraseña"));
 	            
 	            resultSelect.add(administratorEntityTmp);		
 	        }
@@ -85,11 +85,11 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	}
 	
 	private void createSelect(final StringBuilder statement) {
-		statement.append("SELECT id, name, last_name, id_type, id_number, contact_number, email, password ");
+		statement.append("SELECT id, nombre, apellido, tipo_documento, numero_documento, numero_contacto, email, contraseña ");
 	}
 	
 	private void createFrom(final StringBuilder statement) {
-		statement.append("FROM admin ");
+		statement.append("FROM administrador ");
 	}
 
 	private void createWhere(final StringBuilder statement, 
@@ -100,7 +100,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 				statement.append("WHERE id = ? ");
 				parameters.add(filter.getId());
 			} else if (!TextHelper.isEmpty(filter.getName())) {
-				statement.append("WHERE name = ? ");
+				statement.append("WHERE nombre = ? ");
 				parameters.add(filter.getName());
 			} else if (!TextHelper.isEmpty(filter.getEmail())) {
 				System.out.println("Sentencia preparada con where para el EMAIL " + filter.getEmail());
@@ -110,7 +110,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	}
 	
 	private void createOrderBy(final StringBuilder statement) {
-		statement.append("ORDER BY name ASC");
+		statement.append("ORDER BY nombre ASC");
 	}
 
 	@Override
@@ -129,7 +129,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 		}
 	    
 	    final StringBuilder statement = new StringBuilder();
-	    statement.append("INSERT INTO admin(id, name, last_name, id_type, id_number, contact_number, email, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+	    statement.append("INSERT INTO administrador(id, nombre, apellido, tipo_documento, numero_documento, numero_contacto, email, contraseña) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 
 	    if (UUIDHelper.isDefault(data.getId())) {
 	        data.setId(UUIDHelper.generate());
@@ -158,7 +158,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	@Override
 	public void delete(UUID data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("DELETE FROM admin WHERE id = ?");
+	    statement.append("DELETE FROM administrador WHERE id = ?");
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 	        preparedStatement.setObject(1, data);
@@ -174,7 +174,7 @@ final class AdministratorPostgreSQLDAO extends SqlDAO implements AdministratorDA
 	@Override
 	public void update(AdministratorEntity data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("UPDATE admin SET name = ?, last_name = ?, id_type = ?, id_number = ?, contact_number = ?, email = ?, password = ? WHERE id = ?");
+	    statement.append("UPDATE administrador SET nombre = ?, apellido = ?, tipo_documento = ?, numero_documento = ?, numero_contacto = ?, email = ?, contraseña = ? WHERE id = ?");
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 	        preparedStatement.setString(1, data.getName());

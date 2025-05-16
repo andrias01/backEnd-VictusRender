@@ -15,6 +15,7 @@ import co.edu.uco.victusresidencias.data.dao.impl.sql.SqlDAO;
 import co.edu.uco.victusresidencias.entity.CountryEntity;
 import co.edu.uco.victusresidencias.entity.StateEntity;
 
+
 final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	private static final String FROM = "FROM state ";
 	private static final String SELECT = "SELECT id, name, country ";
