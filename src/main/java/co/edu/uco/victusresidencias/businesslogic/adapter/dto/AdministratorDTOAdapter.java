@@ -55,7 +55,7 @@ public class AdministratorDTOAdapter implements Adapter<AdministratorDomain, Adm
                 .setIdNumber(domainToAdapt.getIdNumber())
                 .setContactNumber(domainToAdapt.getContactNumber())
                 .setEmail(domainToAdapt.getEmail())
-                .setPassword(domainToAdapt.getPassword());
+                .setPassword(domainToAdapt.getPassword());  
                 
     }
     @Override

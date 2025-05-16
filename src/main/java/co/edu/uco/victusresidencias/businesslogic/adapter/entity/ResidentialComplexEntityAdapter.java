@@ -20,6 +20,7 @@ public class ResidentialComplexEntityAdapter implements Adapter<ResidentialCompl
 		return instance;
 	}
 
+
 	@Override
 	public ResidentialComplexEntity adaptSource(ResidentialComplexDomain data) {
 		// Ensure data is not null, use a default value if it is
