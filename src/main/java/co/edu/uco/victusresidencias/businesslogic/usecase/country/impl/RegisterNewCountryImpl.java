@@ -34,6 +34,7 @@ public final class RegisterNewCountryImpl implements RegisterNewCountry{
 	
 	@Override
 	public void execute(final CountryDomain data) {
+
 	    countryNameConsistencyIsValid.execute(data.getName(),"Nombre");
 
 	 // Crear un filtro de entidad para buscar si existe un país con el mismo nombre

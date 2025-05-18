@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
-import co.edu.uco.victusresidencias.domain.CountryDomain;
 import co.edu.uco.victusresidencias.domain.StateDomain;
 import co.edu.uco.victusresidencias.entity.StateEntity;
 

@@ -1,12 +1,5 @@
 package co.edu.uco.victusresidencias.controller;
 
-import java.util.ArrayList;
-
-
-
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +12,13 @@ import co.edu.uco.victusresidencias.controller.response.GenerateResponse;
 import co.edu.uco.victusresidencias.controller.response.concrete.CityResponse;
 import co.edu.uco.victusresidencias.controller.response.concrete.GenericResponse;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.UcoApplicationException;
-import co.edu.uco.victusresidencias.crosscutting.exceptions.VictusResidenciasException;
 import co.edu.uco.victusresidencias.data.dao.impl.postgresql.PostgreSqlDAOFactory;
 import co.edu.uco.victusresidencias.domain.CityDomain;
 import co.edu.uco.victusresidencias.dto.CityDTO;
 import co.edu.uco.victusresidencias.entity.CityEntity;
+import java.util.*;
 
+@CrossOrigin(origins = "https://tangerine-profiterole-824fd8.netlify.app")
 @RestController
 @RequestMapping("/api/v1/cities")
 public final class CityController {
@@ -46,20 +40,9 @@ public final class CityController {
         var messages = new ArrayList<String>();
         
         try {
-        	var registerNewCityFacade = new RegisterNewCityFacadeImpl();
-            registerNewCityFacade.execute(city);
-
-            CityDomain cityDomain = CityDTOAdapter.getCityDTOAdapter().adaptSource(city);
-            CityEntity cityEntity = CityEntityAdapter.getCityEntityAdapter().adaptSource(cityDomain);
-            daoFactory.getCityDAO().create(cityEntity);
-
+            new RegisterNewCityFacadeImpl().execute(city);
             messages.add("La ciudad se registró de forma satisfactoria");
             return GenerateResponse.generateSuccessResponse(messages);
-
-        } catch (final VictusResidenciasException exception) {
-            messages.add(exception.getUserMessage());
-            exception.printStackTrace();
-            return GenerateResponse.generateFailedResponse(messages);
 
         }catch (final UcoApplicationException exception) {
             messages.add(exception.getUserMessage());
@@ -123,68 +106,59 @@ public final class CityController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/todas")
     public ResponseEntity<CityResponse> retrieveAll() {
-        var responseWithData = new CityResponse();
+        var response = new CityResponse();
         var messages = new ArrayList<String>();
         
         try {
-        	// Obtención de todas las ciudades desde la base de datos en formato CityEntity
-            List<CityEntity> cityEntities = daoFactory.getCityDAO().findAll();
-
-            // Conversión de CityEntity a CityDomain utilizando el adaptador
-            List<CityDomain> cityDomains = CityEntityAdapter.getCityEntityAdapter().adaptTarget(cityEntities);
-
-            // Conversión de CityDomain a CityDTO para la respuesta final
-            List<CityDTO> cityDTOs = CityDTOAdapter.getCityDTOAdapter().adaptTarget(cityDomains);
+        	var entidades = daoFactory.getCityDAO().findAll();
+            var dominios = CityEntityAdapter.getCityEntityAdapter().adaptTarget(entidades);
+            var dtos = CityDTOAdapter.getCityDTOAdapter().adaptTarget(dominios);
 
             // Preparación de respuesta exitosa
-            responseWithData.setData(cityDTOs);
+            response.setData(dtos);
             messages.add("Las ciudades fueron consultadas satisfactoriamente.");
-            responseWithData.setMessages(messages);
+            response.setMessages(messages);
 
-            return new GenerateResponse<CityResponse>().generateSuccessResponseWithData(responseWithData);
-//            // Llamada a findAll para obtener todas las ciudades en SQL Server
-//            List<CityEntity> cities = daoFactory.getCityDAO().findAll();
-//            List<CityDTO> cityDTOs = cities.stream().map(CityDTO::fromEntity).toList();
-//            
-//            responseWithData.setData(cityDTOs);
-//            messages.add("Las ciudades fueron consultadas satisfactoriamente");
-//            responseWithData.setMessages(messages);
-//            return new GenerateResponse<CityResponse>().generateSuccessResponseWithData(responseWithData);
-        }catch (final Exception exception) {
-            messages.add("Error al consultar la ciudad. Por favor intente nuevamente.");
-            exception.printStackTrace();
-            responseWithData.setMessages(messages);
-            return new ResponseEntity<>(responseWithData, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (final Exception e) {
+            e.printStackTrace();
+            messages.add("Error al consultar las ciudades. Por favor intente nuevamente.");
+            response.setMessages(messages);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CityResponse> retrieveById(@PathVariable UUID id) {
-        var responseWithData = new CityResponse();
+        var response = new CityResponse();
         var messages = new ArrayList<String>();
         
         try {
-            CityEntity cityEntity = daoFactory.getCityDAO().fingByID(id);
+            CityEntity entidades = daoFactory.getCityDAO().fingByID(id);
 
-            if (cityEntity == null) {
+            if (entidades == null) {
                 messages.add("No se encontró una ciudad con el ID especificado.");
-                responseWithData.setMessages(messages);
-                return new ResponseEntity<>(responseWithData, HttpStatus.NOT_FOUND);
+                response.setMessages(messages);
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
 
-            responseWithData.setData(List.of(CityDTO.create()));
+            var dominios = CityEntityAdapter.getCityEntityAdapter().adaptTarget(List.of(entidades));
+            var dtos = CityDTOAdapter.getCityDTOAdapter().adaptTarget(dominios);
+
+//            response.setData(List.of(CityDTO.create()));
+            response.setData(dtos);
             messages.add("La ciudad fue consultada satisfactoriamente.");
-            responseWithData.setMessages(messages);
+            response.setMessages(messages);
             
-            return new GenerateResponse<CityResponse>().generateSuccessResponseWithData(responseWithData);
+            return new GenerateResponse<CityResponse>().generateSuccessResponseWithData(response);
 
         } catch (final Exception exception) {
             messages.add("Error al consultar la ciudad. Por favor intente nuevamente.");
             exception.printStackTrace();
-            responseWithData.setMessages(messages);
-            return new ResponseEntity<>(responseWithData, HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setMessages(messages);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

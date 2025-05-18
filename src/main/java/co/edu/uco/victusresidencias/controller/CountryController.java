@@ -8,8 +8,6 @@ import co.edu.uco.victusresidencias.controller.response.GenerateResponse;
 import co.edu.uco.victusresidencias.controller.response.concrete.CountryResponse;
 import co.edu.uco.victusresidencias.controller.response.concrete.GenericResponse;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.UcoApplicationException;
-import co.edu.uco.victusresidencias.crosscutting.exceptions.VictusResidenciasException;
-import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 import co.edu.uco.victusresidencias.data.dao.impl.postgresql.PostgreSqlDAOFactory;
 import co.edu.uco.victusresidencias.dto.CountryDTO;
 

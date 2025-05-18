@@ -24,6 +24,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	private static final String NAMEclassSingular = "Departamento";
 	private static final String NAMEclassPlural = "Departamentos";
 	private static final String CREATEstatemente = "INSERT INTO departamento(id, nombre, pais_id) VALUES (?, ?, ?)";
+	private static final PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
 	
 	public StatePostgreSqlDAO(final Connection connection) {
 		super(connection);
@@ -47,6 +48,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 		final var statement = new StringBuilder();
 	    final var parameters = new ArrayList<>();
 	    final var resultSelect = new ArrayList<StateEntity>();
+
 	    var statementWasPrepared = false;		 
 	    
 	    createSelect(statement);
@@ -72,7 +74,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	            countryEntityTmp.setId(UUID.fromString(result.getString("pais_id")));
 
 				//esto es para que muestre el nombre del pais cuando busque el departamento
-				PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
+
 				var entidadPais = factoria.getCountryDAO().fingByID(UUID.fromString(result.getString("pais_id")));
 				//Aqui entra el nombre del pais
 				countryEntityTmp.setName(entidadPais.getName());
@@ -102,15 +104,30 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	private void createWhere(final StringBuilder statement,
 							 final StateEntity filter,
 							 final List<Object> parameters) {
-	    if (!UUIDHelper.isDefault(filter.getId())) {
-	        statement.append("WHERE id = ? ");
-	        parameters.add(filter.getId());
-	    } else if (!TextHelper.isEmpty(filter.getName())) {
+//	    if (!UUIDHelper.isDefault(filter.getId())) {
+//	        statement.append("WHERE id = ? ");
+//	        parameters.add(filter.getId());
+//	    } else if (!TextHelper.isEmpty(filter.getName())) {
+//			statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
+//			statement.append("nombre = ? ");
+//			parameters.add(filter.getName());
+//		}
+		if (!UUIDHelper.isDefault(filter.getId())) {
+			statement.append("WHERE id = ? ");
+			parameters.add(filter.getId());
+		}
+
+		if (!TextHelper.isEmpty(filter.getName())) {
 			statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
 			statement.append("nombre = ? ");
 			parameters.add(filter.getName());
 		}
 
+		if (!UUIDHelper.isDefault(filter.getCountry().getId())) {
+			statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
+			statement.append("departameto_id = ? ");
+			parameters.add(filter.getCountry().getId());
+		}
 
 	}
 
@@ -121,22 +138,24 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 
 	@Override
 	public void create(StateEntity data) {
-		StateEntity filter = new StateEntity();
-		filter.setName(data.getName());
-		if (!findByFilter(filter).isEmpty()){
-			throw DataVictusResidenciasException.crear(
-					String.format("El %s ya existe",NAMEclassSingular),
-					String.format("No se puede crear un %s con el nombre duplicado: ",NAMEclassSingular) + data.getName());
-		}
+//		StateEntity filterDepartamento = new StateEntity();
+//		filterDepartamento.setName(data.getName());
+//
+//		if (!findByFilter(filterDepartamento).isEmpty()){
+//			throw DataVictusResidenciasException.crear(
+//					String.format("El %s ya existe",NAMEclassSingular),
+//					String.format("No se puede crear un %s con el nombre duplicado: ",NAMEclassSingular) + data.getName());
+//		}
 		final StringBuilder statement = new StringBuilder();
 		statement.append(CREATEstatemente);
-		if (UUIDHelper.isDefault(data.getId())) {
-			data.setId(UUIDHelper.generate()); // Genera un UUID único si es el valor predeterminado.
-		}
+//		if (UUIDHelper.isDefault(data.getId())) {
+//			data.setId(UUIDHelper.generate()); // Genera un UUID único si es el valor predeterminado.
+//		}
 		try(final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 			preparedStatement.setObject(1,data.getId());
 			preparedStatement.setString(2,data.getName());
-			preparedStatement.setObject(1,data.getCountry());
+			preparedStatement.setObject(3,data.getCountry().getId());
+//			preparedStatement.setObject(3,data.getCountry());
 			preparedStatement.executeUpdate();
 		}catch (final SQLException exception){
 			var userMessage = String.format("Se ha presentado un problema tratando de llevar a cabo el registro de la información del nuevo %s. Por favor intente de nuevo y si el problema persiste reporte la novedad...",NAMEclassSingular);
@@ -182,4 +201,5 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 			throw DataVictusResidenciasException.crear(userMessage, technicalMessage, exception);
 		}
 	}
+
 }

@@ -19,7 +19,6 @@ public final class RegisterNewCountryFacadeImpl implements RegisterNewCountryFac
 		
 		try {
 			factory.initTransaction(); 
-			
 			var registerNewCountryUSeCase = new RegisterNewCountryImpl(factory);
 			var countryDomain = CountryDTOAdapter.getCountryDTOAdapter().adaptSource(data);
 			

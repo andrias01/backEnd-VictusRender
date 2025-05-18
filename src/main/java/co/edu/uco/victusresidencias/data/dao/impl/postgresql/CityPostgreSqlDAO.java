@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import co.edu.uco.victusresidencias.controller.DepartamentoController;
 import co.edu.uco.victusresidencias.crosscutting.helpers.TextHelper;
 import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.DataVictusResidenciasException;
 import co.edu.uco.victusresidencias.data.dao.CityDAO;
 import co.edu.uco.victusresidencias.data.dao.impl.sql.SqlDAO;
 import co.edu.uco.victusresidencias.entity.CityEntity;
+import co.edu.uco.victusresidencias.entity.CountryEntity;
 import co.edu.uco.victusresidencias.entity.StateEntity;
 
 
 final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
+	private static final PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
 	
 	protected CityPostgreSqlDAO(final Connection connection) {
 		super(connection);
@@ -43,16 +46,9 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	    final var resultSelect = new ArrayList<CityEntity>();
 	    var statementWasPrepared = false;		 
 	    
-	    // Select
 	    createSelect(statement);
-	    
-	    // From
 	    createFrom(statement);
-	    
-	    // Where
 	    createWhere(statement, filter, parameters);
-	    
-	    // Order By
 	    createOrderBy(statement);
 	    
 	    try (var preparedStatement = getConnection().prepareStatement(statement.toString())) {
@@ -67,13 +63,21 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	        while (result.next()) {
 	            var cityEntityTmp = new CityEntity();
 	            var stateEntityTmp = new StateEntity();
+				var countryEntityTmp = new CountryEntity();
 	            cityEntityTmp.setId(UUID.fromString(result.getString("id")));
-	            cityEntityTmp.setName(result.getString("name"));
-	            
-	            stateEntityTmp.setId(UUID.fromString(result.getString("state")));
-	            
-	            cityEntityTmp.setState(stateEntityTmp);
-	            
+	            cityEntityTmp.setName(result.getString("nombre"));
+
+	            stateEntityTmp.setId(UUID.fromString(result.getString("departamento_id")));
+
+				var entidadDepartamento = factoria.getStateDAO().fingByID(UUID.fromString(result.getString("departamento_id")));
+	            stateEntityTmp.setName(entidadDepartamento.getName());
+
+				var entidadPais = entidadDepartamento.getCountry().getId();
+				countryEntityTmp.setId(entidadPais);
+	            countryEntityTmp.setName(factoria.getCountryDAO().fingByID(entidadPais).getName());
+
+				stateEntityTmp.setCountry(countryEntityTmp);
+				cityEntityTmp.setState(stateEntityTmp);
 	           
 	            resultSelect.add(cityEntityTmp);		
 	        }
@@ -92,8 +96,8 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	@Override
 	public void create(CityEntity data) {
 		final StringBuilder statement = new StringBuilder();
-		statement.append("INSERT INTO city(id, name, state) VALUES (?, ?, ?)");
- 
+		statement.append("INSERT INTO ciudad(id, nombre, departamento_id) VALUES (?, ?, ?)");
+ 		System.out.println("id de ciudad que se va a crear "+ data.getId());
 		try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 			preparedStatement.setObject(1, data.getId());
 			preparedStatement.setString(2, data.getName());
@@ -112,7 +116,7 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	@Override
 	public void delete(UUID data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("DELETE FROM City WHERE id = ?");
+	    statement.append("DELETE FROM ciudad WHERE id = ?");
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 
@@ -131,7 +135,7 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	@Override
 	public void update(CityEntity data) {
 		final StringBuilder statement = new StringBuilder();
-	    statement.append("UPDATE City SET name = ?, state = ? WHERE id = ?");
+	    statement.append("UPDATE ciudad SET nombre = ?, departamento_id = ? WHERE id = ?");
 
 	    try (final var preparedStatement = getConnection().prepareStatement(statement.toString())) {
 
@@ -151,14 +155,16 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	}
 	
 	private void createSelect(final StringBuilder statement) {
-	    statement.append("SELECT id, name, state ");
+	    statement.append("SELECT id, nombre, departamento_id ");
 	}
 
 	private void createFrom(final StringBuilder statement) {
-	    statement.append("FROM city ");
+	    statement.append("FROM ciudad ");
 	}
 
-	private void createWhere(final StringBuilder statement, final CityEntity filter, final List<Object> parameters) {
+	private void createWhere(final StringBuilder statement,
+							 final CityEntity filter,
+							 final List<Object> parameters) {
 	    if (!UUIDHelper.isDefault(filter.getId())) {
 	        statement.append("WHERE id = ? ");
 	        parameters.add(filter.getId());
@@ -166,19 +172,19 @@ final class CityPostgreSqlDAO extends SqlDAO implements CityDAO {
 	    
 	    if (!TextHelper.isEmpty(filter.getName())) {
 	        statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
-	        statement.append("name = ? ");
+	        statement.append("nombre = ? ");
 	        parameters.add(filter.getName());
 	    }
 	    
 	    if (!UUIDHelper.isDefault(filter.getState().getId())) {
 	        statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
-	        statement.append("state = ? ");
+	        statement.append("departameto_id = ? ");
 	        parameters.add(filter.getState().getId());
 	    }
 	}
 
 	private void createOrderBy(final StringBuilder statement) {
-	    statement.append("ORDER BY name ASC");
+	    statement.append("ORDER BY nombre ASC");
 	}
 
 	

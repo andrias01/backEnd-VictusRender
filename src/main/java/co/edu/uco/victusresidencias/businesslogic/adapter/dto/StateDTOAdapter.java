@@ -1,6 +1,7 @@
 package co.edu.uco.victusresidencias.businesslogic.adapter.dto;
 
 
+import co.edu.uco.victusresidencias.businesslogic.adapter.entity.CountryEntityAdapter;
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 
 import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
@@ -12,6 +13,7 @@ import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
 import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
 import co.edu.uco.victusresidencias.domain.StateDomain;
 import co.edu.uco.victusresidencias.dto.StateDTO;
+import co.edu.uco.victusresidencias.entity.CountryEntity;
 
 public class StateDTOAdapter implements Adapter<StateDomain, StateDTO>{
 	
@@ -26,7 +28,7 @@ public class StateDTOAdapter implements Adapter<StateDomain, StateDTO>{
 	}
 
 	@Override
-	public StateDomain adaptSource(final StateDTO data) {
+	public StateDomain adaptSource(StateDTO data) {
 		var dtoToAdapt = ObjectHelper.getDefault(data,StateDTO.create());
 		return StateDomain.create(
 				UUIDHelper.convertToUUID(dtoToAdapt.getId()), 
@@ -41,7 +43,7 @@ public class StateDTOAdapter implements Adapter<StateDomain, StateDTO>{
 		return StateDTO.create()
 				.setId(UUIDHelper.convertToString(domainToAdapt.getId()))
 				.setName(domainToAdapt.getName())
-				.setCountry(CountryDTOAdapter.getCountryDTOAdapter().adaptTarget(domainToAdapt.getCountry()));		
+				.setCountry(CountryDTOAdapter.getCountryDTOAdapter().adaptTarget(domainToAdapt.getCountry()));
 	}
 	@Override
 	public List<StateDTO> adaptTarget(final List<StateDomain> data) {

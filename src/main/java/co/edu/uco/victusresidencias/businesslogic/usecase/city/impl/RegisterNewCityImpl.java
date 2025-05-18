@@ -12,6 +12,7 @@ import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 import co.edu.uco.victusresidencias.data.dao.DAOFactory;
 import co.edu.uco.victusresidencias.domain.CityDomain;
+import co.edu.uco.victusresidencias.entity.CityEntity;
 
 public final class RegisterNewCityImpl implements RegisterNewCity{
 
@@ -36,22 +37,35 @@ public final class RegisterNewCityImpl implements RegisterNewCity{
 	@Override
 	public void execute(final CityDomain data) {
 		cityNameConsistencyIsValid.execute(data.getName(),"Nombre");
-		//cityNameDoesNotExistsForState.execute(data, daoFactory);
-		//stateExists.execute(data.getState().getId(), daoFactory);
-		
+
+		var ciudadEntidadFiltro = new CityEntity();
+		ciudadEntidadFiltro.setName(data.getName());
+
+		boolean ciudadExiste = !daoFactory.getCityDAO().findByFilter(ciudadEntidadFiltro).isEmpty();
+		if (ciudadExiste){
+			String mensajeUsuario = "La Ciudad ya existe";
+			String mensajeTecnico = "La Ciudad con el nombre "+data.getName()+" ya existe en la base de datos.";
+			throw BusinessLogicVictusResidenciasException.create(mensajeUsuario,mensajeTecnico);
+		}
+
+		//si no existe, procede a crear la ciudad
 		var cityDomainToMap = CityDomain.create(generateId(), data.getName(), data.getState());
 		var cityEntity = CityEntityAdapter.getCityEntityAdapter().adaptSource(cityDomainToMap);
+		System.out.println("Id ciudada registerNewCityImpl " +cityEntity.getId());
 		daoFactory.getCityDAO().create(cityEntity);		
 	}
 	
 	private UUID generateId() {
 		var id = UUIDHelper.generate();
-		var cityEntity = daoFactory.getCityDAO().fingByID(id);    
-		
+		var cityEntity = daoFactory.getCityDAO().fingByID(id);
+
 		if (UUIDHelper.isEqual(cityEntity.getId(), id)) {
 			id = generateId();
 		}
-		
+//		UUID id;
+//		do {
+//			id= UUIDHelper.generate();
+//		}while (daoFactory.getCityDAO().fingByID(id) != null);
 		return id;
 		
 	}

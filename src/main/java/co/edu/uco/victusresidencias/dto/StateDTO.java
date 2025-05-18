@@ -43,11 +43,5 @@ public class StateDTO extends DomainDTO {
 		this.country = ObjectHelper.getDefault(country, CountryDTO.create());
 		return this;
 	}
-//	public static void main(String[] args) {
-//		System.out.print(StateDTO.create().getCountry().getName());
-//		System.out.print("\n");
-//		System.out.print(StateDTO.create().getCountry().getId());
-//	}
-	
 
 }

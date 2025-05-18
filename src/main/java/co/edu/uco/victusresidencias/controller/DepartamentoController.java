@@ -1,4 +1,6 @@
 package co.edu.uco.victusresidencias.controller;
+import co.edu.uco.victusresidencias.domain.StateDomain;
+import co.edu.uco.victusresidencias.entity.StateEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import co.edu.uco.victusresidencias.businesslogic.adapter.dto.StateDTOAdapter;
 import co.edu.uco.victusresidencias.businesslogic.adapter.entity.StateEntityAdapter;
@@ -39,6 +41,7 @@ public final class DepartamentoController {
 
         try {
             new RegisterNewDepartamentoFacadeImpl().execute(departamento);
+
             mensajes.add("El departamento se registró de forma satisfactoria.");
             return GenerateResponse.generateSuccessResponse(mensajes);
 
@@ -174,18 +177,18 @@ public final class DepartamentoController {
     // Si tienes Jackson en tu proyecto
 
 
-    public static void main(String[] args) {
-        try {
-            PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
-            var entidades = factoria.getStateDAO().findAll();
-            var dominios = StateEntityAdapter.getStateEntityAdapter().adaptTarget(entidades);
-            var dtos = StateDTOAdapter.getStateDTOAdapter().adaptTarget(dominios);
-
-            ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(entidades);
-            System.out.println(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
+//            var entidades = factoria.getStateDAO().findAll();
+//            var dominios = StateEntityAdapter.getStateEntityAdapter().adaptTarget(entidades);
+//            var dtos = StateDTOAdapter.getStateDTOAdapter().adaptTarget(dominios);
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(entidades);
+//            System.out.println(json);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

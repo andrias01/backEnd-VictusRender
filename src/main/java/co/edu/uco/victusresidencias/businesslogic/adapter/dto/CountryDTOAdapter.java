@@ -9,6 +9,7 @@ import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.Adapter;
 import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
@@ -33,7 +34,7 @@ public class CountryDTOAdapter implements Adapter<CountryDomain, CountryDTO> {
 	public CountryDomain adaptSource(final CountryDTO data) {
 		var dtoToAdapt = ObjectHelper.getDefault(data, CountryDTO.create());
 		return CountryDomain.create(
-				UUIDHelper.convertToUUID(dtoToAdapt.getId()), 
+				UUIDHelper.convertToUUID(dtoToAdapt.getId()),
 				data.getName());
 	}
 

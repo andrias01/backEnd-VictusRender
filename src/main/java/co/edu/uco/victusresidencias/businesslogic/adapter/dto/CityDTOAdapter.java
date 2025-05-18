@@ -1,6 +1,7 @@
 package co.edu.uco.victusresidencias.businesslogic.adapter.dto;
 
 
+import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 
 import co.edu.uco.victusresidencias.crosscutting.helpers.TextHelper;
@@ -44,12 +45,12 @@ public class CityDTOAdapter implements Adapter<CityDomain, CityDTO>{
 
 	@Override
 	public CityDTO adaptTarget(CityDomain data) {
-		// Si el Domain es nulo, usamos un Domain por defecto
-        var domainToAdapt = ObjectHelper.getDefault(data, CityDomain.create(UUIDHelper.getDefault(), TextHelper.EMPTY, StateDomain.create(UUIDHelper.getDefault(),TextHelper.EMPTY, CountryDomain.create(UUIDHelper.getDefault(),TextHelper.EMPTY))));
+		// Si el Domain es nulo, usamos un Domain por defecto CityDomain.create(UUIDHelper.getDefault(), TextHelper.EMPTY, StateDomain.create(UUIDHelper.getDefault(),TextHelper.EMPTY, CountryDomain.create(UUIDHelper.getDefault(),TextHelper.EMPTY)))
+        var domainToAdapt = ObjectHelper.getDefault(data, createDefault.CITY);
 
         // Convertimos el Domain a DTO
         return CityDTO.create()
-            .setId(UUIDHelper.getDefaultAsString()) // Convertimos el UUID a String
+            .setId(UUIDHelper.convertToString(domainToAdapt.getId())) // Convertimos el UUID a String setId(UUIDHelper.getDefaultAsString())
             .setName(domainToAdapt.getName())
             .setState(StateDTOAdapter.getStateDTOAdapter().adaptTarget(domainToAdapt.getState())); // Adaptamos el estado
 	}

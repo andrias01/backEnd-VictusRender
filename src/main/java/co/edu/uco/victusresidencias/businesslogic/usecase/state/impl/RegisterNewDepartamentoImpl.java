@@ -44,10 +44,10 @@ public final class RegisterNewDepartamentoImpl implements RegisterNewDepartament
 		departamentoEntityFilter.setName(data.getName());
 
 	    // Buscar en la base de datos utilizando el filtro
-	    boolean countryExists = !daoFactory.getStateDAO().findByFilter(departamentoEntityFilter).isEmpty();
+	    boolean departamentoExists = !daoFactory.getStateDAO().findByFilter(departamentoEntityFilter).isEmpty();
 
 	    // Lanzar excepción si se encuentra un departamento con el mismo nombre
-	    if (countryExists) {
+	    if (departamentoExists) {
 	        String userMessage = "El departamento ya existe";
 	        String technicalMessage = "El departamento con el nombre '" + data.getName() + "' ya existe en la base de datos.";
 	        
