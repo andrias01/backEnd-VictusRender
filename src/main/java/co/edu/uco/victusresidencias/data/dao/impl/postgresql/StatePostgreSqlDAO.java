@@ -26,7 +26,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 	private static final String CREATEstatemente = "INSERT INTO departamento(id, nombre, pais_id) VALUES (?, ?, ?)";
 	private static final PostgreSqlDAOFactory factoria = new PostgreSqlDAOFactory();
 	
-	public StatePostgreSqlDAO(final Connection connection) {
+	protected StatePostgreSqlDAO(final Connection connection) {
 		super(connection);
 		// TODO Auto-generated constructor stub
 	}
@@ -125,7 +125,7 @@ final class StatePostgreSqlDAO extends SqlDAO implements StateDAO {
 
 		if (!UUIDHelper.isDefault(filter.getCountry().getId())) {
 			statement.append((parameters.isEmpty()) ? "WHERE " : "AND ");
-			statement.append("departameto_id = ? ");
+			statement.append("pais_id = ? ");
 			parameters.add(filter.getCountry().getId());
 		}
 

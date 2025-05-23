@@ -175,8 +175,4 @@ final class CountryPostgreSQLDAO extends SqlDAO implements CountryDAO {
 		
 	}
 
-//	public static void main(String[] args) {
-//		var id = UUIDHelper.generate();
-//		System.out.println(id);
-//	}
 }

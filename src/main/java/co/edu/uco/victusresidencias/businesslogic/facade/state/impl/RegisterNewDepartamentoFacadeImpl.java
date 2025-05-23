@@ -15,8 +15,7 @@ import co.edu.uco.victusresidencias.dto.StateDTO;
 
 public final class RegisterNewDepartamentoFacadeImpl implements RegisterNewDepartamentoFacade{
 	@Override
-	public void
-	execute(final StateDTO data) {
+	public void execute(final StateDTO data) {
 		
 		var factory = DAOFactory.getFactory(DAOSource.POSTGRESQL);
 

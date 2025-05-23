@@ -6,6 +6,8 @@ import co.edu.uco.victusresidencias.businesslogic.usecase.country.RegisterNewCou
 import co.edu.uco.victusresidencias.businesslogic.usecase.country.rules.CountryNameConsistencyIsValid;
 import co.edu.uco.victusresidencias.businesslogic.usecase.country.rules.impl.CountryNameConsistencyIsValidImpl;
 import co.edu.uco.victusresidencias.businesslogic.usecase.state.RegisterNewDepartamento;
+import co.edu.uco.victusresidencias.businesslogic.usecase.state.rules.DepartamentoExisteConsistenciaValida;
+import co.edu.uco.victusresidencias.businesslogic.usecase.state.rules.impl.DepartamentoExisteConsistenciaValidaImpl;
 import co.edu.uco.victusresidencias.crosscutting.exceptions.BusinessLogicVictusResidenciasException;
 import co.edu.uco.victusresidencias.crosscutting.helpers.ObjectHelper;
 import co.edu.uco.victusresidencias.crosscutting.helpers.UUIDHelper;
@@ -20,7 +22,7 @@ import java.util.UUID;
 public final class RegisterNewDepartamentoImpl implements RegisterNewDepartamento {
 
 	private DAOFactory daoFactory;
-	private CountryNameConsistencyIsValid countryNameConsistencyIsValid = new CountryNameConsistencyIsValidImpl();
+	private DepartamentoExisteConsistenciaValida departamentoNameConsistencyIsValid = new DepartamentoExisteConsistenciaValidaImpl();
 
 	public RegisterNewDepartamentoImpl(final DAOFactory daoFactory) {
 		setDaoFactory(daoFactory);
@@ -37,7 +39,7 @@ public final class RegisterNewDepartamentoImpl implements RegisterNewDepartament
 	
 	@Override
 	public void execute(final StateDomain data) {
-	    countryNameConsistencyIsValid.execute(data.getName(),"Nombre");
+		departamentoNameConsistencyIsValid.execute(data.getName(),"Nombre");
 
 	 // Crear un filtro de entidad para buscar si existe un departamento con el mismo nombre
 	    var departamentoEntityFilter = new StateEntity();

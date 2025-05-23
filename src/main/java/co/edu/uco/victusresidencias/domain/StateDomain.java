@@ -38,9 +38,7 @@ public class StateDomain extends Domain {
 		return super.getId();
 	}
 
-	public CountryDomain getCountry() {
-		return country;
-	}
+	public CountryDomain getCountry() {return country;}
 
 	private void setCountry(final CountryDomain country) {
 		this.country = ObjectHelper.getDefault(country, CountryDomain.create());

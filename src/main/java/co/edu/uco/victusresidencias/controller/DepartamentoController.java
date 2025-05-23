@@ -41,7 +41,6 @@ public final class DepartamentoController {
 
         try {
             new RegisterNewDepartamentoFacadeImpl().execute(departamento);
-
             mensajes.add("El departamento se registró de forma satisfactoria.");
             return GenerateResponse.generateSuccessResponse(mensajes);
 

@@ -35,9 +35,7 @@ public class StateEntity extends DomainEntity {
 		return super.getId();
 	}
 
-	public CountryEntity getCountry() {
-		return country;
-	}
+	public CountryEntity getCountry() {return country;}
 
 	public void setCountry(final CountryEntity country) {
 		this.country = ObjectHelper.getDefault(country, new CountryEntity());

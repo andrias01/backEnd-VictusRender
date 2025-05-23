@@ -12,7 +12,7 @@ import co.edu.uco.victusresidencias.entity.StateEntity;
 
 import co.edu.uco.victusresidencias.businesslogic.adapter.createDefault;
 
-public class StateEntityAdapter implements Adapter<StateEntity,StateDomain>{
+public final class StateEntityAdapter implements Adapter<StateEntity,StateDomain>{
 	
 	private static final Adapter<StateEntity,StateDomain> instance = new StateEntityAdapter();
 	
